@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
 
 export const createJWT = (user: User) => {
   const token = jwt.sign(
@@ -42,4 +43,12 @@ export const protect: RequestHandler = (req, res, next) => {
     res.send("Not authorized");
     return;
   }
+};
+
+export const comparePasswords = (password: string, hash: string) => {
+  return bcrypt.compare(password, hash);
+};
+
+export const hashPassword = (password: string) => {
+  return bcrypt.hash(password, 5);
 };
